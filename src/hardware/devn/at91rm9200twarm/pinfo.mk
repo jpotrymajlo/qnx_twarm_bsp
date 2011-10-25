@@ -1,0 +1,4 @@
+define PINFO
+PINFO DESCRIPTION=ATMEL AT91RM9200 ethernet MAC driver
+endef
+EXTRA_CCDEPS+= $(SECTION_ROOT)/at91sam.h

@@ -1,0 +1,32 @@
+%C Driver for ATMEL AT91RM9200 Ethernet MAC controllers
+
+Syntax:
+  io-net -d at91sam [option[,option ...]] ... &
+
+Options (to override autodetected defaults):
+
+  duplex=0|1          Half (0) or full (1) duplex mode.
+  iftype=num          Interface type. <net/if_types.h> (default IFT_ETHER)
+  ioport=0xXXXXXXXX   IO base address.
+  irq=num             IRQ of the interface.
+  lan=num             LAN number.
+  mac=XXXXXXXXXXXX    Interface address of the controller.
+  media=num           Media type <hw/nicinfo.h> (default NIC_MEDIA_802_3)
+  mru=num             Maximum receive unit (default: 1514)
+  mtu=num             Maximum transmission unit (default 1514).
+  receive=num         Set the number of rx descriptors(default 32). 
+  transmit=num        Set the number of tx descriptors(default 64). 
+  nomulticast         Disable multicast support.
+  phy=num             Address of connected PHY device.
+  priority=N          Priority of the driver event thread. (default 21).
+  promiscuous         Enable promiscuous mode.
+  speed=10|100        Media data rate in Megabits/Second
+  rmii                Select RMII. (default MII)
+  uptype=name         Interface name. (default "en")
+  verbose=N           Set verbosity level. (default 0)
+
+Examples:
+  # Start io-net using the AT91SAM driver and the full TCP/IP stack: 
+  io-net -dat91sam mac=00405306175c -ptcpip
+  ifconfig en0 10.184
+

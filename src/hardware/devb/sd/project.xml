@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<module name="devb-sd">
+  <classification>Driver</classification>
+  <description>
+    <short>SD Block driver</short>
+    <abstract><![CDATA[
+			The devb-sd-<variant> is a SD block driver. 
+	        ]]></abstract>
+  </description>
+  <supports>
+    <availability>
+      <cpu isa="arm">
+        <byteOrder>le</byteOrder>
+      </cpu>
+    </availability>
+  </supports>
+  <contents>
+    <component id="sd" generated="true">
+      <location basedir="arm/atlasii.le">devb-sd-atlasii</location>
+      <location basedir="arm/at91sam9263.le">devb-sd-at91sam9263</location>
+    </component>
+  </contents>
+  <requires>
+    <part build="true" location="lib/drvr"/>
+    <part build="false" location="hardware/devb"/>
+  </requires>
+</module>

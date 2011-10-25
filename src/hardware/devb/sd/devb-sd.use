@@ -1,0 +1,18 @@
+%C SD Driver.
+
+Syntax:
+devb-sd-<variant> [cam cam_options][sd sd_options...][blk io-blk_options...] &
+
+Options:  All options are separated by commas.
+
+cam options: 
+    quiet       Be quiet: don't display any information on startup. 
+    verbose     Be verbose: display full information about units (devices)
+                on startup.
+
+sd  options:
+    nodma       No DMA support.
+	bs          Board specific options.
+	directsg    Low level module prefers SG arrays instead of buffer.
+    The sd options control the drivers interface to SD.
+

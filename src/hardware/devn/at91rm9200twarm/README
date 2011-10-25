@@ -1,0 +1,13 @@
+Please review the following known issue with the Ethernet driver on the
+AT91SAM9263
+
+Network driver drops packet due to transmitter under run. A known HW limitation
+with the Ethernet transmitter and usage of slow SDRAM memory will cause the
+transmitter to generate under run and flush all packets/fragments in the
+transmitter queue. For more details about this problem refer to the Atmel
+AT91SAM9263 reference manual (doc6249.pdf) section 49.2.6 “EMACB Errata” fo
+more details.
+
+To overcome this problem, every packet should be defragmented and the buffer
+RAM as well as the buffer descriptors should be taken from SRAM rather than
+SDRAM.

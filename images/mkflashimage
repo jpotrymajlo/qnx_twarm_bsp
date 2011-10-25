@@ -1,0 +1,16 @@
+#!/bin/sh
+# script to build a binary IPL and boot image for AT91RM9200 Twarm Evaluation Kit board.
+# NOTE the image (ipl-ifs-at91rm9200.bin) must be built as binary, i.e. [virtual=armle,binary] in the buildfile 
+set -v
+
+#	Convert IPL into BINARY format
+${QNX_HOST}/usr/bin/ntoarm-objcopy --input-format=elf32-littlearm --output-format=binary -R.data ../install/armle/boot/sys/ipl-at91rm9200 ipl-tmp-at91rm9200.bin
+
+#	Pad BINARY IPL
+mkrec -s4k -ffull -r ipl-tmp-at91rm9200.bin > ipl-at91rm9200.bin
+
+#	Combine the BINARY IPL with the BINARY OS Image
+cat ./ipl-at91rm9200.bin ./ifs-at91rm9200.bin > ipl-ifs-at91rm9200.bin
+
+#	Cleaning up temporary files
+rm -f *tmp*

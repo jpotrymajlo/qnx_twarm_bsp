@@ -1,0 +1,202 @@
+###########################################################################
+## START OF BUILD SCRIPT
+###########################################################################
+
+[image=0x20100000]
+
+[virtual=armle,raw] .bootstrap = {
+	startup-at91rm9200twarm -f 180000000H -v
+        PATH=:/proc/boot:/bin:/usr/bin LD_LIBRARY_PATH=:/proc/boot:/lib:/usr/lib:/lib/dll procnto -vvvvvvv
+}
+[+script] .script = {
+    procmgr_symlink ../../proc/boot/libc.so.3 /usr/lib/ldqnx.so.2
+
+	display_msg Welcome to QNX Neutrino 6.4 on the AT91RM9200 Twarm Board
+   
+    #######################################################################
+    ## DBGU SERIAL driver
+    #######################################################################
+    display_msg Starting DBGU driver...
+    devc-seratdbgu -e -F -S -b115200 -c59904000 0xfffff200,1
+    waitfor /dev/ser1 4
+    reopen /dev/ser1
+    slogger &
+
+    #######################################################################
+    ## NETWORK driver
+    #######################################################################
+    # display_msg Starting Ethernet driver ...
+    display_msg Starting on-board ethernet with TCP/IP stack...
+    io-pkt-v4 -dat91rm9200twarm ioport=0xfffbc000,irq=24,rmii,mac=662200021615,verbose -ptcpip -v &
+    
+    # io-pkt-v4 -dat91sam9xx mac=662200031615 -ptcpip &
+    #    waitfor /dev/io-net/ip0
+    #    waitfor /dev/io-net/en0
+ 
+    #######################################################################
+    ## SPI driver
+    #######################################################################
+    display_msg Starting SPI driver...
+    spi-master -u0 -d at91rm9200twarm base=0xFFFE0000,irq=13,clock=59904000
+    # spi-master -u1 -d at91sam9xx base=0xFFFCC000,irq=13,clock=50000000
+    #######################################################################
+    ## USB driver
+    #######################################################################
+    # display_msg Starting USB driver...
+    # io-usb -d ohci ioport=0x500000,irq=20 &
+    # waitfor /dev/io-usb/io-usb 4
+
+    ###################################################################### 
+    ## Input Drivers 
+    ####################################################################### 
+    # display_msg starting Input Drivers...
+    # io-hid -dusb & 
+    # waitfor /dev/io-hid/io-hid 10 
+
+
+
+    #######################################################################
+    ## These env variables are inherited by all the programs which follow
+    #######################################################################
+    SYSNAME=nto
+    TERM=qansi
+    HOME=/
+    PATH=:/proc/boot:/bin:/usr/bin:/opt/bin
+    LD_LIBRARY_PATH=:/proc/boot:/lib:/usr/lib:/lib/dll:/opt/lib
+
+    #######################################################################
+    ## ETFS Driver
+    #######################################################################
+#    display_msg Starting NAND driver... 
+#   fs-etfs-at91sam9xx -D addr=0x40000000,board_id=at91sam9260-ek -m /fs/etfs
+
+    #######################################################################
+    ## SD/MMC Driver
+    #######################################################################
+    # display_msg Starting SD/MMC driver...
+    # devb-mmcsd-at91sam9xx mmcsd ioport=0xFFFA8000,irq=9
+    
+    [+session] /proc/boot/ksh &
+}
+[type=link] /bin/sh=/proc/boot/ksh
+[type=link] /tmp=/dev/shmem
+
+# standard libs 
+libc.so
+libm.so
+
+###########################################################################
+## uncomment for SPI driver
+###########################################################################
+spi-at91rm9200twarm.so
+
+###########################################################################
+## uncomment for NETWORK driver
+###########################################################################
+devn-at91rm9200twarm.so
+libsocket.so
+librpc.so.2
+devnp-shim.so
+
+###########################################################################
+## uncomment for USB Host driver and Disk driver
+###########################################################################
+# devu-ohci.so
+# libusbdi.so
+# libhiddi.so.1
+# devh-usb.so
+
+
+###########################################################################
+## uncomment for SD/MCI driver
+###########################################################################
+# libcam.so
+# fs-dos.so
+# fs-qnx4.so
+# fs-ext2.so
+# cam-disk.so
+# io-blk.so
+
+[data=c]
+###########################################################################
+## uncomment for SPI driver
+###########################################################################
+spi-master
+
+###########################################################################
+## uncomment for Debug driver
+###########################################################################
+devc-seratdbgu
+
+###########################################################################
+## uncomment for USART driver
+###########################################################################
+# devc-serusart
+
+###########################################################################
+## uncomment for SD/MCI driver
+###########################################################################
+# devb-mmcsd-at91sam9xx
+
+###########################################################################
+## uncomment for NETWORK driver
+###########################################################################
+io-pkt-v4
+nicinfo
+ifconfig
+ping
+cat
+
+
+###########################################################################
+## general commands
+###########################################################################
+cp
+rm
+ls
+cat
+mount
+mkdosfs
+mkqnx6fs
+umount
+ksh
+sleep
+pipe
+pidin
+slogger
+sloginfo
+fs-nfs3
+fs-cifs
+use
+slay
+shutdown
+devc-pty
+echo
+ps
+
+###########################################################################
+## uncomment for ETFS driver
+###########################################################################
+# fs-etfs-at91sam9xx
+# etfsctl
+
+###########################################################################
+## uncomment for USB Host driver and Disk driver
+###########################################################################
+# io-usb
+# usb
+# devb-umass
+
+###########################################################################
+## uncomment for input driver
+###########################################################################
+# io-hid
+# devi-hid
+# devu-mouse 
+# devu-kbd
+# hidview 
+
+
+###########################################################################
+## END OF BUILD SCRIPT
+###########################################################################

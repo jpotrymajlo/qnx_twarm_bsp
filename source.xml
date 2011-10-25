@@ -1,0 +1,14 @@
+<!-- Unless otherwise specified, values/attributes are free-form strings -->
+    <!-- type is currently either BSP or SourceOnly -->
+<sourcePackage type="BSP" id="BSP-AT91RM9200-TWARM">
+    <title>AT91RM9200-TWARM</title>
+    <release>1.0.0</release>
+    <description> This package contains the source and build files for targeting QNX/Neutrino on the AT91RM9200-TWARM reference board.</description>
+    <vendor>QNX Software Systems</vendor>
+    <qnxTargetVersion>6.4.1</qnxTargetVersion>
+    <qnxTargetCPU variant="armle">ARM</qnxTargetCPU>
+    <!-- type is currently only import, will be extended in the future. -->
+    <bsp type="import">
+	  <import>src/hardware/startup/boards/at91rm9200twarm/build</import>
+    </bsp>
+</sourcePackage>

@@ -1,0 +1,3 @@
+define PINFO
+PINFO DESCRIPTION=le AT91RM9200 startup
+endef
